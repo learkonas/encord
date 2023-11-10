@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ImagesTab from './components/ImagesTab';
+import PredictDialogue from './components/PredictDialogue';
+import PredictionsTab from './components/PredictionsTab';
+import { Prediction, PredictionContent } from './components/types';
 
+//
 function App() {
+  const [predictionsData, setPredictionsData] = useState<Prediction[]>([]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      <ImagesTab setPredictionsData={setPredictionsData} />
+      
+      <PredictionsTab prediction={predictionsData} />
     </div>
   );
 }
