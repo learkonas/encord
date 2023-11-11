@@ -81,7 +81,7 @@ const ImagesTab: React.FC<{ setPredictionsData: (newData: Prediction[]) => void 
          
       // find and update the success status update div
       setSuccessMessage(`Successfully submitted image '${user_title}' to the prediction engine.`);
-
+      setErrorMessage(null);
       fetchPredictions();   // fetching predictions from db
     } catch (error) {
       // Handle error - show error message to the user
