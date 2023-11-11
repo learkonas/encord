@@ -3,9 +3,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## How to use
-1. Run `git clone https://github.com/learkonas/encord`\
-2. Run `npm install`\
-3. Run `npm start`\
+1. Run `git clone https://github.com/learkonas/encord`
+2. Run `npm install`
+3. Run `npm start`
+4. If an error occurs with the 'Submit' button, run `json-server --watch db.json --port 3001`
 
 You can monitor background operations with `netstat -ano | findstr :3000`, where 3000 represents the port (the database runs on port 3001). Tasks can be killed with `taskkill /PID XXXXX /F`, where XXXXX represents the five-digit task ID.
 
