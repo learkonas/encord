@@ -8,7 +8,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 3. Run `npm start`
 4. If an error occurs with the 'Submit' button, run `json-server --watch db.json --port 3001`
 
-You can monitor background operations with `netstat -ano | findstr :3000`, where 3000 represents the port (the database runs on port 3001). Tasks can be killed with `taskkill /PID XXXXX /F`, where XXXXX represents the five-digit task ID.
+Step 3 should launch the server as well as building the app.
+- This is the spec for (npm) start: `"start": "react-scripts start & npm run server"`
+- npm run server, triggered in that command, is specified as: `"server": "json-server --watch db.json --port 3001"`
+
+You can monitor background operations in Windows with `netstat -ano | findstr :3000`, where 3000 represents the port (the database runs on port 3001). Tasks can be killed with `taskkill /PID XXXXX /F`, where XXXXX represents the five-digit task PID.
+If on Mac, use `netstat -anv | grep 3000` and `kill -9 XXXXX` instead.
 
 ## Available Scripts
 
