@@ -267,9 +267,16 @@ input[type="text" i], textarea {
   }
 }
 
-.error-message {
+.statusUpdate {
   font-size: 0.5em;
-  color: red;
+}
+
+.error-message {
+  color: rgb(200, 20, 20);
+}
+
+.success-message {
+  color: rgb(20, 200, 20)
 }
 
 #predictionsTablePlaceholder {

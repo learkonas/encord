@@ -10,8 +10,8 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
   
   let current_prediction: Prediction | undefined;
 
-  let containerWidthPx = 28 * (window.innerWidth / 100)
-  let containerHeightPx = 23 * (window.innerWidth / 100)
+  let containerWidthPx = 28 * (window.innerWidth / 100)     //the image display is rigidly defined to 28 svw width and 23 svw height (yes, vw). A feature that expanded the image to big screen and permitted an individual export would be good, even if the main feature is ability to export on the level of thousands or more images
+  let containerHeightPx = 23 * (window.innerWidth / 100)    // scaling everything might not have been the quickest approach, but I still would have had to scale something due to mismatches between the specific Orange On Bowl image I was able to display (1147x860) and the scale of the coordinates (1600x1200)
   
   function calculate_container_width() {
     containerWidthPx = 28 * (window.innerWidth / 100)
@@ -21,9 +21,9 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
     }
   }
 
-  window.addEventListener('resize', calculate_container_width); // risk of memory leak
+  window.addEventListener('resize', calculate_container_width); // risk of memory leak, but resizes the image every time the window is resized
   
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);      // canvas to draw the prediction boxes on the image
   const drawAnnotations = (prediction: Prediction) => {
     current_prediction = prediction
     const canvas = canvasRef.current;
@@ -37,7 +37,7 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
         containerWidthPx = 28 * (window.innerWidth / 100)
         containerHeightPx = 23 * (window.innerWidth / 100)
 
-        scaleX = containerWidthPx / 1600;
+        scaleX = containerWidthPx / 1600;   // I divide by 1600 and 1200, rather than the actual image width, because I hardcoded a version of the Orange On A Bowl image, and my version is 1147 pixels wide and scaled, whereas the hardcoded data is for 1600x1200; I've had to scale them for the canvas appropriately
         scaleY = containerHeightPx / 1200;
 
         canvas.width = containerWidthPx;
@@ -55,27 +55,25 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
           const height = y2 - y1;
 
           ctx?.beginPath();
-          ctx?.rect(x1, y1, width, height);
-          ctx!.fillStyle = '#075d502d'; 
+          ctx?.rect(x1, y1, width, height);       // drawing the prediction boxes (first filling, then border)
+          ctx!.fillStyle = '#075d502d';           // high transparency
           ctx?.fillRect(x1, y1, width, height); 
 
-          ctx!.strokeStyle = '#075d50f1'; // Non-null assertion
+          ctx!.strokeStyle = '#075d50f1';       // both these colours are dark greens
           ctx?.stroke();
           ctx?.closePath();
-          
-          // Set the text properties
 
 
           // Calculate text width and height
           const text = `${item.label.charAt(0).toUpperCase()}${item.label.slice(1)}: (${item.score}%)`;
           const textMetrics = ctx!.measureText(text);
           const textWidth = textMetrics.width;
-          const textHeight = 12; // Approximate text height; adjust as needed
-          ctx!.font = `${textHeight}px Helvetica`; // Example font properties
-          ctx!.fillStyle = '#dae7e5'; // Text color
-          ctx!.textBaseline = 'top'; // Align text to top
+          const textHeight = 12; // select text height
+          ctx!.font = `${textHeight}px Helvetica`;
+          ctx!.fillStyle = '#dae7e5'; // Text colour, a white with a tiny green blue tint
+          ctx!.textBaseline = 'top';
 
-          // Set the background properties
+          // Set background properties
           const backgroundPadding = 4; // Space between text and background edges
           const borderRadius = textHeight; // Border radius for the background
           const backgroundWidth = textWidth + textHeight + backgroundPadding * 2;
@@ -101,8 +99,8 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
           ctx!.fill();
 
           // Draw the text over the background
-          ctx!.fillStyle = '#dae7e5'; // Text color
-          ctx!.fillText(text, backgroundX + backgroundPadding*2, backgroundY + backgroundPadding);
+          ctx!.fillStyle = '#dae7e5'; // Text colour, same pale colour as above
+          ctx!.fillText(text, backgroundX + backgroundPadding*2, backgroundY + backgroundPadding);  // writes the text within the shape (rectange curved borders) created above
 
           ctx!.closePath();
         });
@@ -115,44 +113,43 @@ const PredictionsTab: React.FC<PredictionProps> = ({ prediction }) => {
 
   const handleViewClick = (index: string, prediction: Prediction, event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(prediction)
-    drawAnnotations(prediction);
-    let button = event.currentTarget;
-    let image_to_reveal = document.getElementById(index)
+    drawAnnotations(prediction);        // draw the annotations on the canvas from the specified prediction (passed through clicking the View button of that prediction)
+    let button = event.currentTarget;   //identify the clicked button
+    let image_to_reveal = document.getElementById(index)                // identifies the ID  of the image to reveal based on the 'index' variable, which is a String type of the index number of the prediction array
     let placeholderText = document.getElementById("placeholderText");
 
     let imageContainerDiv = document.getElementById('imageContainer');
-    let allImages = imageContainerDiv?.querySelectorAll('canvas');
+    let allImages = imageContainerDiv?.querySelectorAll('canvas');      //identifies every canvas, one for each image
     
     let tableBody = document.getElementById('tableBody');
     let allButtons = tableBody?.querySelectorAll('button');
 
-
+    // if the button is not in 'show' mode, ie, the button gives the option to View
     if (button.innerHTML === "VIEW") {
       if (placeholderText) {
-        placeholderText.innerHTML = ''
+        placeholderText.innerHTML = ''    //removes the placeholderText. We could just hide the div which would be cleaner but this works fine
       }
 
       allButtons?.forEach((button) => {
-        button.innerHTML = "VIEW";
-        button.classList.remove("showingPrediction")
+        button.innerHTML = "VIEW";                    //when one button is clicked, we first set all of them to say 'view'
+        button.classList.remove("showingPrediction")  // and remove the css styling accordingly
       });
-      button.innerHTML = "SHOWN";
-      button.classList.add("showingPrediction")
+      button.innerHTML = "SHOWN";                     //then we set the click button to 'Show'
+      button.classList.add("showingPrediction")       // and add the css style accordingly
     
-      allImages?.forEach((image) => {
-        image.classList.add("hidden");
+      allImages?.forEach((image) => {                 // we then do the same for the images...
+        image.classList.add("hidden");                // first hiding all of them
       });
-
-      image_to_reveal?.classList.remove("hidden")
+      image_to_reveal?.classList.remove("hidden")     // and then showing the one we wish to see
 
     }
-    else {
-      image_to_reveal?.classList.add("hidden")
+    else {       // if the clicked button does not say 'View' (ie, it says Shown), we know it is currently being shown
+      image_to_reveal?.classList.add("hidden")  // we hide the image 
       if (placeholderText) {
-        placeholderText.innerHTML = 'Select an image from the table.'
+        placeholderText.innerHTML = 'Select an image from the table.' // we restore the placeholder
       }
-      button.innerHTML = "VIEW";
-      button.classList.remove("showingPrediction")
+      button.innerHTML = "VIEW";                      // we give the option to click View again
+      button.classList.remove("showingPrediction")    // and remove the styling
     }
   };
 

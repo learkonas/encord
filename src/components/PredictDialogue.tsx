@@ -11,6 +11,7 @@ const PredictDialogue: React.FC<PredictDialogueProps> = ({ image, onClose, onSub
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   
+  // generating a random and unique predictionID to manage predictions at scale
   let result = '';
   const generatePredictionID = (length: number) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -20,11 +21,11 @@ const PredictDialogue: React.FC<PredictDialogueProps> = ({ image, onClose, onSub
     }
     return result;
   };
+  const predictionID = generatePredictionID(8); // specifies predictionID of 8 digits
 
-  const predictionID = generatePredictionID(8);
   let predictionTimestamp = Math.floor(Date.now() / 1000);
   const handleSubmit = () => {
-    onSubmit(title, description, image, predictionID, predictionTimestamp);
+    onSubmit(title, description, image, predictionID, predictionTimestamp);   //this submits the prediction via the submitPrediction fucntion in ImagesTab.tsx
     document.getElementById('predictionsTablePlaceholder')?.classList.add('hidden');
     document.getElementById('predictionsTable')?.classList.remove('hidden');
     document.getElementById('imageContainer')?.classList.remove('hidden');
