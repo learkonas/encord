@@ -172,7 +172,7 @@ const ImagesTab: React.FC<{ setPredictionsData: (newData: Prediction[]) => void 
     <div id="imagesTab" className="container">
       <div id="image-upload">
         <header>Upload your image files</header>
-        <input id="images" type="file" multiple onChange={handleImageUpload}/>
+        <input id="images" type="file" multiple accept="image/*" onChange={handleImageUpload}/>
         <table id="image-list-table" className="hidden">
           <thead>
             <tr className="tr dark">
