@@ -400,7 +400,7 @@ input[type="text" i], textarea {
 
 #placeholderText {
   font-size: 0.75em;
-  color: #075d5018; /*lightgray before*/
+  color: lightgray; /* before*/
 }
 
 
