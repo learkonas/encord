@@ -27,6 +27,7 @@ const PredictDialogue: React.FC<PredictDialogueProps> = ({ image, onClose, onSub
     onSubmit(title, description, image, predictionID, predictionTimestamp);
     document.getElementById('predictionsTablePlaceholder')?.classList.add('hidden');
     document.getElementById('predictionsTable')?.classList.remove('hidden');
+    document.getElementById('imageContainer')?.classList.remove('hidden');
   };
 
   return (

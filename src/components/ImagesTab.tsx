@@ -14,6 +14,8 @@ export interface ImageFile {
 
 
 
+let predictionsArray: Prediction[] = [];
+
 const ImagesTab: React.FC<{ setPredictionsData: (newData: Prediction[]) => void }> = ({ setPredictionsData }) => {
 
   const [images, setImages] = useState<ImageFile[]>([]);
@@ -21,7 +23,6 @@ const ImagesTab: React.FC<{ setPredictionsData: (newData: Prediction[]) => void 
   const [currentImage, setCurrentImage] = useState<ImageFile | null>(null);
   
 
-  const predictionsArray: Prediction[] = [];
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     document.getElementById('image-list-table')?.classList.remove('hidden');
@@ -119,12 +120,48 @@ const ImagesTab: React.FC<{ setPredictionsData: (newData: Prediction[]) => void 
         id: submittedData.predictionID,
         predictions: constructPredictionContent(hardcodedData),
       };
-      
+
       predictionsArray.push(predictions)
+      let number_of_predictions = predictionsArray.length
 
-      setPredictionsData([predictions]); // Here we update the App component's state
+      
+      const allPredictions = predictionsArray.slice(0, number_of_predictions); // I have no idea why this line is necessary
+      setPredictionsData(allPredictions);
 
-      //setPredictionsData((prevPredictionsData) => [...prevPredictionsData, predictions]);
+
+      return
+      if (number_of_predictions === 1) {      // this was one of the hacky solutions that worked for me  before finding the above
+        setPredictionsData([predictions]);
+      }
+      if (number_of_predictions === 2) {
+        let prediction1 = predictionsArray[0]
+        let prediction2 = predictionsArray[1]
+        setPredictionsData([prediction1, prediction2]);
+      }
+      if (number_of_predictions === 3) {
+        let prediction1 = predictionsArray[0]
+        let prediction2 = predictionsArray[1]
+        let prediction3 = predictionsArray[2]
+        setPredictionsData([prediction1, prediction2, prediction3]);
+      }
+      if (number_of_predictions === 4) {
+        let prediction1 = predictionsArray[0]
+        let prediction2 = predictionsArray[1]
+        let prediction3 = predictionsArray[2]
+        let prediction4 = predictionsArray[3]
+        setPredictionsData([prediction1, prediction2, prediction3, prediction4]);
+      }
+      if (number_of_predictions === 5) {
+        let prediction1 = predictionsArray[0]
+        let prediction2 = predictionsArray[1]
+        let prediction3 = predictionsArray[2]
+        let prediction4 = predictionsArray[3]
+        let prediction5 = predictionsArray[4]
+        setPredictionsData([prediction1, prediction2, prediction3, prediction4, prediction5]);
+      }
+
+
+      //setPredictionsData((prevPredictionsData) => [...prevPredictionsData, predictions]);   // this didn't work because of how I create the imagesTab at `const ImagesTab: React.FC....`. Clearly there is something obvious that I am missing, which every other React dev on the planet knows...
 
     } catch (error) {
       console.error('There has been a problem with your fetch operation:', error);

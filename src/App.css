@@ -207,14 +207,6 @@ table {
   margin-bottom: 12px;
 }
 
-.predictionImageName {
-  font-size: 0.5em;
-}
-
-#prediction-meta {
-  gap: 0;
-}
-
 input[type="text" i], textarea {
   writing-mode: horizontal-tb !important;
   padding-block: 1px;
@@ -262,7 +254,7 @@ input[type="text" i], textarea {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 @keyframes App-logo-spin {
@@ -278,10 +270,10 @@ input[type="text" i], textarea {
   font-size: 0.5em;
   color: red;
 }
-/*
-.predictionsTab {
-  
-}*/
+
+#predictionsTablePlaceholder {
+  font-size: 0.78em;
+}
 
 #root {
   width: 90svw;
@@ -385,10 +377,16 @@ input[type="text" i], textarea {
   align-content: center;
 }
 
-.predictionImage {
+#prediction-meta {
+  gap: 0;
+}
+
+.predictionImageName {
+  font-size: 0.5em;
+}
+
+.predictionImage, .predictionCanvas {
   object-fit: contain;
-  height: 30svw;
-  width: 28svw; 
 }
 
 .predictionViewButtons {
@@ -402,8 +400,9 @@ input[type="text" i], textarea {
 
 #placeholderText {
   font-size: 0.75em;
-  color: lightgray;
+  color: #075d5018; /*lightgray before*/
 }
+
 
 #predictionsContainer {
   display: grid;
